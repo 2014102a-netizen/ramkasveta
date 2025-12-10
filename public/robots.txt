@@ -1,0 +1,11 @@
+# Robots.txt для ramkasveta.ru
+
+User-agent: *
+Allow: /
+
+Sitemap: https://www.ramkasveta.ru/sitemap.xml
+
+# Блокируем служебные директории
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
