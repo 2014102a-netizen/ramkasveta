@@ -1,8 +1,5 @@
 {
-  "rewrites": [
-    {
-      "source": "/((?!assets|images|videos|robots.txt|sitemap.xml|favicon.svg|vite.svg).*)",
-      "destination": "/index.html"
-    }
-  ]
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite"
 }
