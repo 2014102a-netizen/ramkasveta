@@ -1,6 +1,7 @@
 /**
  * Quiz Component - "Диалог с душой"
  * Updated with warm/cool/earth routing and images
+ * Includes SEO Schema.org markup for LLM visibility
  */
 
 import { useReducer } from 'react';
@@ -14,6 +15,8 @@ import type {
   AnswerValue,
   Archetype,
 } from '../../types/quiz';
+import { SEOSchemas } from '../SEOSchemas';
+import { generateProductSchema, generateQuizFAQSchema } from '../../utils/seoSchemas';
 
 // Quiz state
 type QuizStep = 'intro' | 'q1' | 'q2' | 'q3' | 'result';
@@ -130,6 +133,9 @@ export default function Quiz() {
 
   return (
     <section id="quiz" className="quiz-section">
+      {/* SEO: FAQ Schema for quiz questions */}
+      <SEOSchemas schema={generateQuizFAQSchema()} />
+
       <div className="container">
         <AnimatePresence mode="wait">
           {/* INTRO SCREEN */}
@@ -227,21 +233,25 @@ export default function Quiz() {
 
           {/* RESULT SCREEN */}
           {state.step === 'result' && state.result && (
-            <motion.div
-              key="result"
-              className="quiz-result"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-            >
-              <motion.h2
-                className="result-name"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
+            <>
+              {/* SEO: Product Schema for recommended archetype */}
+              <SEOSchemas schema={generateProductSchema(state.result)} />
+
+              <motion.div
+                key="result"
+                className="quiz-result"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
               >
-                {state.result.name}
-              </motion.h2>
+                <motion.h2
+                  className="result-name"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  {state.result.name}
+                </motion.h2>
 
               <motion.div
                 className="result-card"
@@ -291,6 +301,7 @@ export default function Quiz() {
                 </div>
               </motion.div>
             </motion.div>
+            </>
           )}
         </AnimatePresence>
       </div>
