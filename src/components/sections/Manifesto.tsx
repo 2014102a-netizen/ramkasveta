@@ -25,8 +25,7 @@ const Manifesto = () => {
       y: 0,
       filter: 'blur(0px)',
       transition: {
-        duration: 0.8,
-        ease: 'easeOut',
+        duration: 0.8,      // ease убрали
       },
     },
   };
@@ -43,8 +42,7 @@ const Manifesto = () => {
       scale: 1,
       filter: 'blur(0px)',
       transition: {
-        duration: 1,
-        ease: 'easeOut',
+        duration: 1,        // ease убрали
       },
     },
   };
