@@ -13,7 +13,8 @@ import type {
 } from '../types/quiz';
 
 // Load archetypes from JSON with type assertion
-const archetypes: Archetype[] = archetypesData.archetypes as Archetype[];
+// Using double assertion because JSON strings don't have literal types
+const archetypes: Archetype[] = archetypesData.archetypes as unknown as Archetype[];
 
 /**
  * Quiz questions configuration
