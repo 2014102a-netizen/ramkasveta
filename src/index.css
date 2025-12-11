@@ -256,7 +256,32 @@
     display: block;
   }
 
-  /* Visual Options */
+  /* Option Images */
+  .option-image-container {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .option-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Cards with images have different padding */
+  .quiz-option-card.has-image {
+    padding: 1rem;
+  }
+
+  .quiz-option-card.has-emoji .option-emoji {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Visual Options (old, keep for compatibility) */
   .option-preview {
     width: 100%;
     height: 150px;
@@ -352,6 +377,22 @@
     margin: 0 auto;
   }
 
+  /* Result images */
+  .result-image-container {
+    width: 100%;
+    max-height: 400px;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .result-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Old placeholders (for compatibility) */
   .result-image-placeholder {
     width: 100%;
     height: 300px;
