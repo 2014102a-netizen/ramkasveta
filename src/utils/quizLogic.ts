@@ -12,8 +12,8 @@ import type {
   QuizQuestion,
 } from '../types/quiz';
 
-// Load archetypes from JSON
-const archetypes: Archetype[] = archetypesData.archetypes;
+// Load archetypes from JSON with type assertion
+const archetypes: Archetype[] = archetypesData.archetypes as Archetype[];
 
 /**
  * Quiz questions configuration
