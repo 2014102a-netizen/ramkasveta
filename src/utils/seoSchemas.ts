@@ -12,7 +12,7 @@ export const generateProductSchema = (archetype: Archetype) => ({
   '@context': 'https://schema.org',
   '@type': 'Product',
   'name': archetype.name,
-  'description': archetype.description,
+  'description': archetype.seoDescription,
   'image': archetype.image || `https://ramkasveta.ru/images/products/${archetype.slug}-main.jpg`,
   'sku': archetype.slug,
   'brand': {
@@ -20,6 +20,7 @@ export const generateProductSchema = (archetype: Archetype) => ({
     'name': 'Рамка Света'
   },
   'category': `Глава ${archetype.category}`,
+  'keywords': archetype.keywords.join(', '),
   'offers': {
     '@type': 'Offer',
     'url': `https://ramkasveta.ru/catalog/${archetype.slug}`,
@@ -42,6 +43,21 @@ export const generateProductSchema = (archetype: Archetype) => ({
       '@type': 'PropertyValue',
       'name': 'Эмоция',
       'value': archetype.emotion
+    },
+    {
+      '@type': 'PropertyValue',
+      'name': 'Для кого',
+      'value': archetype.forWhom
+    },
+    {
+      '@type': 'PropertyValue',
+      'name': 'Для пространства',
+      'value': archetype.forSpace
+    },
+    {
+      '@type': 'PropertyValue',
+      'name': 'Настроение',
+      'value': archetype.mood
     }
   ],
   'review': {
@@ -122,8 +138,9 @@ export const generateArchetypesListSchema = (archetypes: Archetype[]) => ({
       '@type': 'Product',
       'name': archetype.name,
       'url': `https://ramkasveta.ru/catalog/${archetype.slug}`,
-      'description': archetype.description,
-      'image': archetype.image || `https://ramkasveta.ru/images/products/${archetype.slug}-main.jpg`
+      'description': archetype.seoDescription,
+      'image': archetype.image || `https://ramkasveta.ru/images/products/${archetype.slug}-main.jpg`,
+      'keywords': archetype.keywords.join(', ')
     }
   }))
 });
