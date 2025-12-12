@@ -5,6 +5,7 @@
  */
 
 import { useReducer } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   quizQuestions,
@@ -15,8 +16,6 @@ import type {
   AnswerValue,
   Archetype,
 } from '../../types/quiz';
-import { SEOSchemas } from '../SEOSchemas';
-import { generateProductSchema, generateQuizFAQSchema } from '../../utils/seoSchemas';
 
 // Quiz state
 type QuizStep = 'intro' | 'q1' | 'q2' | 'q3' | 'result';
@@ -133,8 +132,43 @@ export default function Quiz() {
 
   return (
     <section id="quiz" className="quiz-section">
-      {/* SEO: FAQ Schema for quiz questions */}
-      <SEOSchemas schema={generateQuizFAQSchema()} />
+      {/* FAQPage Schema для LLM */}
+      <Helmet>
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "Как подобрать рамку света, которая подойдёт именно мне?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Пройдите наш интерактивный квиз «Конструктор Атмосферы». Ответьте на 3 вопроса о том, что просит душа, какой язык вам ближе (визуал или текст), и для какого пространства вы ищете свет. Мы подберём архетип, который откликнется именно вашей душе."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Чем отличаются Гжель и Хохлома в вашей коллекции?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Гжель (Лунная Соната) — это сине-белые узоры, создающие покой и очищение мыслей перед сном. Подходит для медитации. Хохлома (Очаг) — красно-золотые узоры, дающие тепло, энергию жизни и уют. Согревающая атмосфера костра."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Что такое Phygital-опыт в Рамке Света?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Каждая рамка включает QR-код с уникальным плейлистом звуков. Для Гжели — звуки зимнего леса и хруст снега. Для Хохломы — треск костра и летний вечер. Это мультисенсорный опыт: свет + звук + тактильность дерева."
+                  }
+                }
+              ]
+            }
+          `}
+        </script>
+      </Helmet>
 
       <div className="container">
         <AnimatePresence mode="wait">
@@ -234,8 +268,66 @@ export default function Quiz() {
           {/* RESULT SCREEN */}
           {state.step === 'result' && state.result && (
             <>
-              {/* SEO: Product Schema for recommended archetype */}
-              <SEOSchemas schema={generateProductSchema(state.result)} />
+              {/* Product Schema для LLM */}
+              <Helmet>
+                <script type="application/ld+json">
+                  {`
+                    {
+                      "@context": "https://schema.org",
+                      "@type": "Product",
+                      "name": "${state.result.name}",
+                      "description": "${state.result.seoDescription}",
+                      "image": "${state.result.image || `https://ramkasveta.ru/images/products/${state.result.slug}-main.jpg`}",
+                      "sku": "${state.result.slug}",
+                      "brand": {
+                        "@type": "Brand",
+                        "name": "Рамка Света"
+                      },
+                      "category": "${state.result.category}",
+                      "keywords": "${state.result.keywords.join(', ')}",
+                      "offers": {
+                        "@type": "Offer",
+                        "url": "https://ramkasveta.ru/catalog/${state.result.slug}",
+                        "priceCurrency": "RUB",
+                        "price": "${state.result.price}",
+                        "availability": "https://schema.org/InStock",
+                        "seller": {
+                          "@type": "Organization",
+                          "name": "Рамка Света"
+                        }
+                      },
+                      "material": "Дерево, LED",
+                      "additionalProperty": [
+                        {
+                          "@type": "PropertyValue",
+                          "name": "Категория",
+                          "value": "${state.result.category}"
+                        },
+                        {
+                          "@type": "PropertyValue",
+                          "name": "Эмоция",
+                          "value": "${state.result.emotion}"
+                        },
+                        {
+                          "@type": "PropertyValue",
+                          "name": "Для кого",
+                          "value": "${state.result.forWhom}"
+                        },
+                        {
+                          "@type": "PropertyValue",
+                          "name": "Для пространства",
+                          "value": "${state.result.forSpace}"
+                        },
+                        {
+                          "@type": "PropertyValue",
+                          "name": "Настроение",
+                          "value": "${state.result.mood}"
+                        }
+                      ]
+                    }
+                  `}
+                </script>
+              </Helmet>
 
               <motion.div
                 key="result"
