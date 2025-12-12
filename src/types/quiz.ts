@@ -42,6 +42,12 @@ export interface Archetype {
   description: string;
   image?: string;
   price: number;
+  // SEO fields for better LLM and search engine visibility
+  keywords: string[];
+  seoDescription: string;
+  forWhom: string;
+  forSpace: string;
+  mood: string;
 }
 
 // Quiz result
