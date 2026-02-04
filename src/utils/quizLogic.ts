@@ -1,6 +1,6 @@
 /**
  * Quiz Logic for Hero's Journey
- * Updated with warm/cool/earth routing logic
+ * Updated with warm/cool/earth routing logic and 6 archetypes
  */
 
 import archetypesData from '../data/archetypes.json';
@@ -39,8 +39,8 @@ export const quizQuestions: QuizQuestion[] = [
       },
       {
         value: 'earth',
-        label: 'Опора',
-        description: 'Хочу чувствовать связь и защиту',
+        label: 'Волшебство',
+        description: 'Хочу верить в чудо и сказку',
         image: 'https://user-gen-media-assets.s3.amazonaws.com/gemini_images/280e204c-68ed-4119-aa62-ddac6ac2f86a.png',
       },
     ],
@@ -64,8 +64,8 @@ export const quizQuestions: QuizQuestion[] = [
       },
       {
         value: 'earth',
-        label: 'Ритуал и Действие',
-        description: 'Я верю в силу традиций',
+        label: 'Сказки и Ритуалы',
+        description: 'Я верю в силу волшебства',
         emoji: '✨',
       },
     ],
@@ -83,14 +83,14 @@ export const quizQuestions: QuizQuestion[] = [
       },
       {
         value: 'warm',
-        label: 'Кабинет',
-        description: 'Место силы и концентрации',
+        label: 'Гостиная / Кухня',
+        description: 'Место тепла и семейных встреч',
         image: 'https://user-gen-media-assets.s3.amazonaws.com/gemini_images/e808257c-410a-4950-8307-61a87dc6880e.png',
       },
       {
         value: 'earth',
-        label: 'Гостиная',
-        description: 'Место встречи и семейного тепла',
+        label: 'Детская / Кабинет',
+        description: 'Место для мечтаний и волшебства',
         image: 'https://user-gen-media-assets.s3.amazonaws.com/gemini_images/69996f65-f38d-4f6c-8346-7573c9b95064.png',
       },
     ],
@@ -106,9 +106,16 @@ export function getArchetypeBySlug(slug: ArchetypeSlug): Archetype | undefined {
 
 /**
  * Get archetype by category (warm/cool/earth)
+ * Returns the primary archetype for each category
  */
 export function getArchetypeByCategory(category: AnswerValue): Archetype | undefined {
-  return archetypes.find((a) => a.category === category);
+  // Primary mapping: warm -> khokhloma, cool -> gzhel, earth -> zhar-ptitsa
+  const primaryMapping: Record<AnswerValue, ArchetypeSlug> = {
+    warm: 'khokhloma',
+    cool: 'gzhel',
+    earth: 'zhar-ptitsa',
+  };
+  return archetypes.find((a) => a.slug === primaryMapping[category]);
 }
 
 /**
@@ -116,6 +123,13 @@ export function getArchetypeByCategory(category: AnswerValue): Archetype | undef
  */
 export function getAllArchetypes(): Archetype[] {
   return archetypes;
+}
+
+/**
+ * Get archetypes by chapter
+ */
+export function getArchetypesByChapter(chapterId: string): Archetype[] {
+  return archetypes.filter((a) => a.chapter === chapterId);
 }
 
 /**
@@ -189,10 +203,21 @@ export function determineArchetype(answers: QuizAnswers): QuizResult {
 }
 
 /**
- * Get recommended archetypes (other 2)
+ * Get recommended archetypes (other archetypes from same or related chapters)
  */
 export function getRelatedArchetypes(currentSlug: ArchetypeSlug): Archetype[] {
-  return archetypes.filter((a) => a.slug !== currentSlug);
+  const current = archetypes.find((a) => a.slug === currentSlug);
+  if (!current) return archetypes.slice(0, 2);
+
+  // Return archetypes from the same chapter first, then others
+  const sameChapter = archetypes.filter(
+    (a) => a.slug !== currentSlug && a.chapter === current.chapter
+  );
+  const otherChapters = archetypes.filter(
+    (a) => a.slug !== currentSlug && a.chapter !== current.chapter
+  );
+
+  return [...sameChapter, ...otherChapters].slice(0, 3);
 }
 
 /**

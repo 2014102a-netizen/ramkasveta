@@ -1,9 +1,12 @@
 import { useRef, useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
+import { GlowTextCharByChar } from '../ui/GlowText';
 
 const Hero = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const titleRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(titleRef, { once: true, amount: 0.3 });
 
   useEffect(() => {
     const video = videoRef.current;
@@ -11,10 +14,10 @@ const Hero = () => {
       video.play().catch((error) => {
         console.log('Autoplay prevented:', error);
       });
-      
+
       const handleLoadedData = () => setVideoLoaded(true);
       video.addEventListener('loadeddata', handleLoadedData);
-      
+
       return () => {
         video.removeEventListener('loadeddata', handleLoadedData);
       };
@@ -44,11 +47,11 @@ const Hero = () => {
         >
           <source src="/videos/firebird-hero.mp4" type="video/mp4" />
         </video>
-        
+
         {/* Fallback / Loading */}
         {!videoLoaded && (
           <div className="absolute inset-0 bg-dark-bg flex items-center justify-center">
-            <motion.div 
+            <motion.div
               animate={{ opacity: [0.4, 1, 0.4] }}
               transition={{ duration: 2, repeat: Infinity }}
               className="text-accent-gold text-2xl font-heading"
@@ -57,29 +60,54 @@ const Hero = () => {
             </motion.div>
           </div>
         )}
-        
+
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-dark-bg/50 via-dark-bg/20 to-dark-bg/80" />
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+      <div className="relative z-10 text-center px-4 max-w-5xl mx-auto" ref={titleRef}>
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
+          transition={{ duration: 1.2, ease: 'easeOut' }}
         >
+          {/* Главный заголовок с эффектом зажигания */}
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold mb-6 text-light-warm drop-shadow-2xl leading-tight">
-            НЕ ПРОСТО СВЕТ.
-            <br />
-            <span className="text-accent-gold">ИСТОРИЯ.</span>
+            {isInView ? (
+              <>
+                <GlowTextCharByChar
+                  text="РАМКА СВЕТА"
+                  as="span"
+                  className="block"
+                  charDelay={0.05}
+                  duration={0.6}
+                  glowColor="rgba(212, 175, 55, 0.8)"
+                  glowIntensity="strong"
+                  delay={0.3}
+                />
+                <motion.span
+                  className="block text-accent-gold mt-2"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.2, duration: 0.8 }}
+                >
+                  НЕ ПРОСТО СВЕТ. ИСТОРИЯ.
+                </motion.span>
+              </>
+            ) : (
+              <>
+                <span className="block opacity-10">РАМКА СВЕТА</span>
+                <span className="block text-accent-gold mt-2 opacity-10">НЕ ПРОСТО СВЕТ. ИСТОРИЯ.</span>
+              </>
+            )}
           </h1>
         </motion.div>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 1, delay: 1.5 }}
           className="text-lg md:text-xl lg:text-2xl mb-12 text-light-warm/90 drop-shadow-lg max-w-3xl mx-auto"
         >
           Интерьерные лайтбоксы, соединяющие древние смыслы и современные технологии.
@@ -87,8 +115,8 @@ const Hero = () => {
 
         <motion.button
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.8 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 1, delay: 1.8 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.98 }}
           onClick={handleScrollDown}
@@ -99,8 +127,8 @@ const Hero = () => {
 
         <motion.p
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.2 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 1, delay: 2.2 }}
           className="mt-12 text-sm md:text-base text-light-warm/60 italic"
         >
           *Осторожно: магия внутри настоящая, хоть птица и цифровая.*
@@ -111,16 +139,16 @@ const Hero = () => {
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ 
-          duration: 0.6, 
-          delay: 1.5,
+        transition={{
+          duration: 0.6,
+          delay: 2.5,
         }}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer"
         onClick={handleScrollDown}
       >
         <motion.div
           animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
         >
           <svg
             className="w-6 h-6 text-light-warm/50 hover:text-accent-gold transition-colors"
