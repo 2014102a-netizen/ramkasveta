@@ -2,6 +2,7 @@ export interface Product {
   id: string;
   name: string;
   collection: 'word' | 'origins' | 'tales';
+  archetype?: string;
   description: string;
   longDescription: string;
   price: number;
