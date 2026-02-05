@@ -2,16 +2,29 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.ramkasveta.ru/</loc>
-    <lastmod>2025-06-12</lastmod>
+    <lastmod>2026-02-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-  
-  <!-- TODO Этап 4: Добавить страницы коллекций -->
-  <!--
+
   <url>
-    <loc>https://www.ramkasveta.ru/collection/sila-slova</loc>
+    <loc>https://www.ramkasveta.ru/#manifesto</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  -->
+
+  <url>
+    <loc>https://www.ramkasveta.ru/#quiz</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ramkasveta.ru/#catalog</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
 </urlset>
